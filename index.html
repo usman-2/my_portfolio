@@ -398,7 +398,7 @@
             transition: transform .3s cubic-bezier(.2, .8, .2, 1), box-shadow .3s ease, background-color .3s ease, border-color .3s ease;
         }
         .hx-btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
-        .hx-btn-main { background: var(--hx-amber); color: #1a1033; box-shadow: 0 10px 28px rgba(245, 158, 11, .32); }
+        .hx-btn-main { background: var(--hx-amber, #F59E0B); color: #1a1033; box-shadow: 0 10px 28px rgba(245, 158, 11, .32); }
         .hx-btn-main:hover { color: #1a1033; transform: translateY(-4px); box-shadow: 0 16px 36px rgba(245, 158, 11, .45); }
         .hx-btn-main:after {
             content: '';
@@ -596,17 +596,6 @@
         }
 
         /* About Section */
-        .about-section {
-            padding: 120px 0;
-            background: var(--light);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .dark-mode .about-section {
-            background: var(--dark);
-        }
-
         .section-title {
             font-size: 3rem;
             margin-bottom: 60px;
@@ -631,123 +620,155 @@
             border-radius: 3px;
         }
 
-        .about-profile-img {
-            width: 420px;
-            height: 420px;
-            border-radius: 25px;
-            object-fit: cover;
-            border: 8px solid white;
-            box-shadow: var(--shadow-xl);
-            transition: var(--transition);
-            animation: profile-float 8s ease-in-out infinite;
-        }
-
-        .dark-mode .about-profile-img {
-            border-color: var(--light);
-        }
-
-        .about-text {
-            font-size: 1.15rem;
-            line-height: 1.9;
-            margin-bottom: 30px;
+        /* ===== About (redesigned) ===== */
+        .ab {
+            --ab-bg: #F7F5FF;
+            --ab-ink: #1B1530;
+            --ab-mute: #57516F;
+            --ab-line: rgba(27, 21, 48, .16);
+            --ab-chip: #FFFFFF;
+            --ab-accent: #6D28D9;
             position: relative;
-            padding-left: 25px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .about-highlight {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-            padding: 0 2px;
-        }
-
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 25px;
-            margin: 50px 0;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 30px 20px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            position: relative;
+            padding: clamp(76px, 10vw, 128px) 0;
+            background: var(--ab-bg);
+            color: var(--ab-ink);
             overflow: hidden;
+            isolation: isolate;
         }
-
-        .dark-mode .stat-item {
-            background: var(--light);
+        .dark-mode .ab {
+            --ab-bg: #111827;
+            --ab-ink: #F1EEFF;
+            --ab-mute: #B7B1D3;
+            --ab-line: rgba(255, 255, 255, .17);
+            --ab-chip: rgba(255, 255, 255, .06);
+            --ab-accent: #A78BFA;
         }
-
-        .stat-item:before {
+        .ab:before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: var(--gradient-primary);
+            z-index: -1;
+            width: 620px; height: 620px;
+            right: -220px; top: -200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(124, 58, 237, .16), transparent 68%);
+            pointer-events: none;
         }
 
-        .stat-item:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-lg);
+        .ab-grid {
+            display: grid;
+            grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+            gap: clamp(36px, 6vw, 92px);
+            align-items: start;
         }
 
-        .stat-number {
-            font-size: 3rem;
+        /* Left: portrait framed like a print proof */
+        .ab-side { position: sticky; top: 112px; }
+        .ab-photo { position: relative; max-width: 440px; margin: 0 auto; padding: 14px; }
+        .ab-photo-in {
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 26px 60px rgba(46, 24, 110, .25);
+            transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+            transition: transform .5s ease-out, opacity .8s ease;
+            will-change: transform;
+        }
+        .ab-photo-in img { display: block; width: 100%; height: auto; }
+        .ab-crop {
+            position: absolute;
+            width: 26px; height: 26px;
+            border: 0 solid var(--ab-ink);
+            opacity: .75;
+            transition: translate .5s cubic-bezier(.2, .8, .2, 1), opacity .8s ease .3s;
+        }
+        .ab-crop.c1 { top: 0; left: 0;   border-top-width: 2px; border-left-width: 2px;  --ox: 12px;  --oy: 12px; }
+        .ab-crop.c2 { top: 0; right: 0;  border-top-width: 2px; border-right-width: 2px; --ox: -12px; --oy: 12px; }
+        .ab-crop.c3 { bottom: 54px; left: 0;  border-bottom-width: 2px; border-left-width: 2px;  --ox: 12px;  --oy: -12px; }
+        .ab-crop.c4 { bottom: 54px; right: 0; border-bottom-width: 2px; border-right-width: 2px; --ox: -12px; --oy: -12px; }
+        .ab-photo:hover .ab-crop.c1 { translate: -5px -5px; }
+        .ab-photo:hover .ab-crop.c2 { translate: 5px -5px; }
+        .ab-photo:hover .ab-crop.c3 { translate: -5px 5px; }
+        .ab-photo:hover .ab-crop.c4 { translate: 5px 5px; }
+        .ab-bar { display: flex; gap: 4px; height: 8px; margin: 34px 0 0; }
+        .ab-bar span { flex: 1; background: var(--c); border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12); }
+        .dark-mode .ab-bar span { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .28); }
+        .ab-cap { text-align: center; margin: 22px 0 0; }
+        .ab-cap strong { display: block; font-family: 'Syne', 'Montserrat', sans-serif; font-weight: 700; font-size: 1.2rem; }
+        .ab-cap span { color: var(--ab-mute); font-size: .95rem; }
+
+        /* Right: copy */
+        .ab-title {
+            font-family: 'Syne', 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+            line-height: 1.12;
+            letter-spacing: -.02em;
+            margin: 0 0 28px;
+            text-wrap: balance;
+            color: var(--ab-ink);
+        }
+        .ab-w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .14em; margin-bottom: -.14em; }
+        .ab-w > span { display: inline-block; transition: transform .95s cubic-bezier(.2, .8, .2, 1); transition-delay: calc(var(--i) * .07s); }
+
+        .ab-lead { font-size: clamp(1.08rem, 1.5vw, 1.25rem); line-height: 1.75; margin: 0 0 18px; max-width: 40rem; }
+        .ab-text { font-size: 1.04rem; line-height: 1.85; color: var(--ab-mute); margin: 0 0 18px; max-width: 40rem; }
+        .ab-hl { color: var(--ab-accent); font-weight: 600; }
+        .ab-price { color: var(--ab-ink); font-weight: 700; background: linear-gradient(transparent 62%, rgba(245, 158, 11, .4) 62%); padding: 0 2px; }
+
+        .ab-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px 22px; margin: 40px 0; }
+        .ab-stat { border-top: 2px solid var(--ab-ink); padding-top: 14px; }
+        .ab-num { display: block; font-family: 'Syne', 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(1.9rem, 3vw, 2.5rem); line-height: 1; color: var(--ab-ink); }
+        .ab-num i { font-style: normal; color: var(--ab-accent); }
+        .ab-stat small { display: block; margin-top: 8px; font-size: .86rem; color: var(--ab-mute); }
+
+        .ab-quote { margin: 0 0 36px; max-width: 40rem; position: relative; padding-top: 34px; }
+        .ab-quote:before {
+            content: '\201C';
+            position: absolute;
+            top: -14px; left: -4px;
+            font-family: 'Syne', 'Montserrat', sans-serif;
             font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: block;
+            font-size: 5.5rem;
             line-height: 1;
-            margin-bottom: 10px;
+            color: var(--ab-accent);
+            opacity: .9;
         }
+        .ab-quote p { font-size: clamp(1.08rem, 1.5vw, 1.2rem); line-height: 1.75; font-weight: 500; margin: 0; }
 
-        .design-tools {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 35px 0;
-        }
-
-        .tool-item {
-            background: white;
-            padding: 12px 25px;
+        .ab-sub { font-family: 'Syne', 'Montserrat', sans-serif; font-weight: 700; font-size: 1.05rem; margin: 0 0 14px; }
+        .ab-tools { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 34px; padding: 0; list-style: none; }
+        .ab-tool {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 10px 18px;
             border-radius: 12px;
-            box-shadow: var(--shadow);
-            font-weight: 600;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            font-weight: 600; font-size: .95rem;
+            background: var(--ab-chip);
+            border: 1px solid var(--ab-line);
+            transition: transform .3s cubic-bezier(.2, .8, .2, 1), background-color .3s ease, color .3s ease, border-color .3s ease;
         }
+        .ab-tool i { color: var(--ab-accent); font-size: 1.15rem; transition: color .3s ease; }
+        .ab-tool:hover { transform: translateY(-4px); background: #7C3AED; border-color: #7C3AED; color: #fff; }
+        .ab-tool:hover i { color: #fff; }
 
-        .dark-mode .tool-item {
-            background: var(--light);
+        /* Reveal when the section scrolls into view (JS adds .ab-js, then .ab-in) */
+        .ab-fade { transition: opacity .8s ease, transform .8s cubic-bezier(.2, .8, .2, 1); transition-delay: var(--d, 0s); }
+        .ab-js:not(.ab-in) .ab-w > span { transform: translateY(112%); }
+        .ab-js:not(.ab-in) .ab-fade { opacity: 0; transform: translateY(18px); }
+        .ab-js:not(.ab-in) .ab-photo-in { opacity: 0; transform: translateY(40px) rotate(-3deg); }
+        .ab-js:not(.ab-in) .ab-crop { opacity: 0; translate: var(--ox) var(--oy); }
+
+        @media (min-width: 1200px) { .ab-stats { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 991px) {
+            .ab-grid { grid-template-columns: 1fr; gap: 48px; }
+            .ab-side { position: static; }
+            .ab-photo { max-width: 380px; }
         }
-
-        .tool-item:hover {
-            transform: translateY(-5px);
-            background: var(--gradient-primary);
-            color: white;
-            box-shadow: var(--shadow-lg);
+        @media (max-width: 480px) {
+            .ab-stats { gap: 22px 16px; }
+            .ab-tool { padding: 9px 14px; font-size: .9rem; }
         }
-
-        .tool-item:hover .tool-icon {
-            color: white;
-        }
-
-        .tool-icon {
-            font-size: 1.4rem;
-            color: var(--primary);
+        @media (prefers-reduced-motion: reduce) {
+            .ab *, .ab *:before { transition: none !important; }
+            .ab-photo-in { transform: none; }
         }
 
         /* Skills Section */
@@ -1156,19 +1177,11 @@
         /* Responsive Design */
 
         @media (max-width: 992px) {
-            .about-profile-img {
-                width: 320px;
-                height: 320px;
-            }
         }
 
         @media (max-width: 768px) {
             .section-title {
                 font-size: 2.5rem;
-            }
-            .about-profile-img {
-                width: 280px;
-                height: 280px;
             }
             .btn-custom, .btn-outline-light {
                 padding: 14px 30px;
@@ -1191,13 +1204,6 @@
         @media (max-width: 576px) {
             .section-title {
                 font-size: 2.2rem;
-            }
-            .about-profile-img {
-                width: 250px;
-                height: 250px;
-            }
-            .stat-number {
-                font-size: 2.5rem;
             }
         }
 
@@ -1325,64 +1331,50 @@
     </section>
 
     <!-- About Section -->
-    <section class="about-section" id="about">
+    <section class="ab" id="about">
         <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="row align-items-center">
-                <div class="col-lg-4 text-center">
-                    <div class="about-profile-container">
-                        <img src="assets/usmanpic.jpg" alt="Usman Ghaffar - Graphic Designer Profile" class="about-profile-img">
-                        <h3 class="mt-3">Usman Ghaffar</h3>
-                        <p class="text-muted">Graphic Designer & Digital Services Provider</p>
+            <div class="ab-grid">
+                <div class="ab-side">
+                    <div class="ab-photo" id="abPhoto">
+                        <div class="ab-photo-in">
+                            <img src="assets/usmanpic.jpg" width="956" height="960" loading="lazy" alt="Usman Ghaffar - Graphic Designer Profile">
+                        </div>
+                        <i class="ab-crop c1" aria-hidden="true"></i><i class="ab-crop c2" aria-hidden="true"></i><i class="ab-crop c3" aria-hidden="true"></i><i class="ab-crop c4" aria-hidden="true"></i>
+                        <div class="ab-bar" aria-hidden="true">
+                            <span style="--c:#00AEEF"></span><span style="--c:#EC008C"></span><span style="--c:#FFF200"></span><span style="--c:#111111"></span>
+                        </div>
                     </div>
+                    <p class="ab-cap ab-fade" style="--d:.5s"><strong>Usman Ghaffar</strong><span>Graphic Designer &amp; Digital Services Provider</span></p>
                 </div>
-                <div class="col-lg-8 about-content">
-                    <h3 class="mb-4">Crafting Visual Stories & Creating Digital Opportunities</h3>
-                    <p class="about-text">Hello! I'm <span class="about-highlight">Usman Ghaffar</span>, a passionate and experienced graphic designer based in Vehari, Punjab, Pakistan. With over 3 years of professional experience, I specialize in creating compelling visual designs that communicate brand stories effectively and leave lasting impressions.</p>
-                    
-                    <p class="about-text">My expertise extends beyond traditional graphic design. I provide a <span class="about-highlight">unique UK TikTok account creation service</span> that helps Pakistani content creators unlock monetization opportunities through TikTok's Creator Fund. For only <strong>1500 PKR</strong>, I create verified UK-based TikTok accounts that enable creators to earn money from their content.</p>
-                    
-                    <div class="stats-container">
-                        <div class="stat-item">
-                            <span class="stat-number" data-count="50">0</span>
-                            <span class="stat-label">Projects Completed</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number" data-count="3">0</span>
-                            <span class="stat-label">Years Experience</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number" data-count="50">0</span>
-                            <span class="stat-label">Happy Clients</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number" data-count="100">0</span>
-                            <span class="stat-label">TikTok Accounts</span>
-                        </div>
+
+                <div class="ab-content">
+                    <h2 class="ab-title"><span class="visually-hidden">About Usman Ghaffar: </span><span class="ab-w"><span style="--i:0">Crafting</span></span> <span class="ab-w"><span style="--i:1">visual</span></span> <span class="ab-w"><span style="--i:2">stories</span></span> <span class="ab-w"><span style="--i:3">and</span></span> <span class="ab-w"><span style="--i:4">creating</span></span> <span class="ab-w"><span style="--i:5">digital</span></span> <span class="ab-w"><span style="--i:6">opportunities</span></span></h2>
+
+                    <p class="ab-lead ab-fade" style="--d:.35s">Hello! I'm <span class="ab-hl">Usman Ghaffar</span>, a passionate and experienced graphic designer based in Vehari, Punjab, Pakistan. With over 3 years of professional experience, I create visual designs that communicate brand stories effectively and leave a lasting impression.</p>
+
+                    <p class="ab-text ab-fade" style="--d:.45s">My expertise extends beyond traditional graphic design. I provide a <span class="ab-hl">unique UK TikTok account creation service</span> that helps Pakistani content creators unlock monetization opportunities through TikTok's Creator Fund. For only <span class="ab-price">1500 PKR</span>, I create verified UK-based TikTok accounts that enable creators to earn money from their content.</p>
+
+                    <div class="ab-stats ab-fade" style="--d:.55s">
+                        <div class="ab-stat"><span class="ab-num"><b data-count="50" style="font-weight:inherit">50</b><i>+</i></span><small>Projects completed</small></div>
+                        <div class="ab-stat"><span class="ab-num"><b data-count="3" style="font-weight:inherit">3</b><i>+</i></span><small>Years of experience</small></div>
+                        <div class="ab-stat"><span class="ab-num"><b data-count="50" style="font-weight:inherit">50</b><i>+</i></span><small>Happy clients</small></div>
+                        <div class="ab-stat"><span class="ab-num"><b data-count="100" style="font-weight:inherit">100</b><i>+</i></span><small>TikTok accounts</small></div>
                     </div>
-                    
-                    <p class="about-text">My design philosophy combines aesthetics with strategy, ensuring every design element serves a purpose. Whether it's logo design, branding, or creating monetizable TikTok accounts, I focus on delivering value and achieving client objectives.</p>
-                    
-                    <h5 class="mt-4 mb-3">Professional Design Tools:</h5>
-                    <div class="design-tools">
-                        <div class="tool-item">
-                            <i class="fas fa-paint-brush tool-icon"></i>
-                            <span>Adobe Photoshop</span>
-                        </div>
-                        <div class="tool-item">
-                            <i class="fas fa-file-alt tool-icon"></i>
-                            <span>InPage</span>
-                        </div>
-                        <div class="tool-item">
-                            <i class="fab fa-microsoft tool-icon"></i>
-                            <span>Microsoft Office</span>
-                        </div>
-                        <div class="tool-item">
-                            <i class="fas fa-pen-fancy tool-icon"></i>
-                            <span>Corel Draw</span>
-                        </div>
+
+                    <blockquote class="ab-quote ab-fade" style="--d:.65s">
+                        <p>My design philosophy combines aesthetics with strategy, ensuring every design element serves a purpose. Whether it's logo design, branding, or creating monetizable TikTok accounts, I focus on delivering value and achieving client objectives.</p>
+                    </blockquote>
+
+                    <div class="ab-fade" style="--d:.75s">
+                        <h3 class="ab-sub">Professional design tools</h3>
+                        <ul class="ab-tools">
+                            <li class="ab-tool"><i class="fas fa-paint-brush"></i>Adobe Photoshop</li>
+                            <li class="ab-tool"><i class="fas fa-file-alt"></i>InPage</li>
+                            <li class="ab-tool"><i class="fab fa-microsoft"></i>Microsoft Office</li>
+                            <li class="ab-tool"><i class="fas fa-pen-fancy"></i>Corel Draw</li>
+                        </ul>
+                        <a href="#contact" class="hx-btn hx-btn-main">Contact for services</a>
                     </div>
-                    <a href="#contact" class="btn btn-custom mt-3">Contact for Services</a>
                 </div>
             </div>
         </div>
@@ -1788,44 +1780,6 @@
         }
     }
     
-    // SIMPLE COUNTER SOLUTION (Works on mobile)
-    function startCounters() {
-        // Check if counters already started
-        if (document.querySelector('.stat-number').textContent !== '0') return;
-        
-        document.querySelectorAll('.stat-number').forEach(stat => {
-            const target = parseInt(stat.getAttribute('data-count'));
-            let count = 0;
-            const speed = 2000 / target; // Adjust speed based on target
-            
-            const counter = setInterval(() => {
-                count++;
-                stat.textContent = count;
-                if (count >= target) {
-                    clearInterval(counter);
-                }
-            }, speed);
-        });
-    }
-    
-    // Run counters when page loads
-    window.addEventListener('load', function() {
-        // Wait a bit then start counters
-        setTimeout(startCounters, 500);
-    });
-    
-    // Also run when user scrolls near about section
-    window.addEventListener('scroll', function() {
-        const aboutSection = document.querySelector('.about-section');
-        const sectionTop = aboutSection.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
-        
-        // If section is in view (top 300px of window)
-        if (sectionTop < windowHeight - 300) {
-            startCounters();
-        }
-    });
-    
     // Navbar scroll effect
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.navbar');
@@ -1917,7 +1871,54 @@
 })();
 </script>
 
+<script>
+// About: reveal on scroll, count-up numbers, portrait tilt
+(function () {
+    const sec = document.getElementById('about');
+    if (!sec) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const nums = sec.querySelectorAll('[data-count]');
+
+    function countUp() {
+        const t0 = performance.now(), dur = 1600;
+        (function step(t) {
+            const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+            nums.forEach(function (n) { n.textContent = Math.round(n.dataset.count * e); });
+            if (p < 1) requestAnimationFrame(step);
+        })(t0);
+    }
+
+    if (!reduce && 'IntersectionObserver' in window) {
+        sec.classList.add('ab-js');
+        nums.forEach(function (n) { n.textContent = '0'; });
+        const io = new IntersectionObserver(function (entries) {
+            if (entries[0].isIntersecting) {
+                sec.classList.add('ab-in');
+                countUp();
+                io.disconnect();
+            }
+        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+        io.observe(sec);
+    }
+
+    const photo = document.getElementById('abPhoto');
+    if (photo && fine && !reduce) {
+        const inner = photo.querySelector('.ab-photo-in');
+        photo.addEventListener('pointermove', function (e) {
+            const r = photo.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+            inner.style.setProperty('--ry', (x * 9).toFixed(2) + 'deg');
+            inner.style.setProperty('--rx', (-y * 9).toFixed(2) + 'deg');
+        });
+        photo.addEventListener('pointerleave', function () {
+            inner.style.setProperty('--ry', '0deg');
+            inner.style.setProperty('--rx', '0deg');
+        });
+    }
+})();
+</script>
+
 </body>
 
 </html>
-
