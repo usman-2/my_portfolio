@@ -334,13 +334,15 @@
             gap: clamp(24px, 4vw, 64px);
             align-items: center;
         }
-        .hx-copy { position: relative; z-index: 2; }
+        .hx-copy { position: relative; z-index: 2; container-type: inline-size; min-width: 0; }
 
         /* Name: letters rise out of a mask, then react to the cursor */
         .hx-name {
             font-family: 'Syne', 'Montserrat', sans-serif;
             font-weight: 800;
-            font-size: clamp(3.3rem, 8.2vw, 7.2rem);
+            font-size: clamp(2.2rem, 5.6vw, 4.6rem);   /* fallback */
+            font-size: clamp(2.2rem, 11.4cqw, 8rem);   /* fits the column: Syne is very wide */
+            white-space: nowrap;
             line-height: .95;
             letter-spacing: -.03em;
             margin: 0 0 16px;
