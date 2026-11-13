@@ -1,0 +1,45 @@
+
+{
+  "redirects": [
+    {
+      "source": "/uk-tiktok-account",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/uk-tiktok-account/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/video-editing",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/video-editing/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/thumbnails",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/thumbnails/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/social-media-management",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/social-media-management/",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}
